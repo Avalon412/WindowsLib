@@ -1,0 +1,586 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище LibraryDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Book_Id" />
+          </Key>
+          <Property Name="Book_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Autor" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Genre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Year" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Publication" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Employee_Id" />
+          </Key>
+          <Property Name="Employee_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BirthDate" Type="date" Nullable="false" />
+          <Property Name="HireDate" Type="date" Nullable="false" />
+          <Property Name="Job_Id" Type="int" Nullable="false" />
+          <Property Name="Salary" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="Job_Id" />
+          </Key>
+          <Property Name="Job_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Min_Salary" Type="int" Nullable="false" />
+          <Property Name="Max_Salary" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Logbook">
+          <Key>
+            <PropertyRef Name="Logbook_Id" />
+          </Key>
+          <Property Name="Logbook_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Reader_Id" Type="int" Nullable="false" />
+          <Property Name="Employee_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="ReaderOrder_Id" />
+            <PropertyRef Name="LineItem" />
+          </Key>
+          <Property Name="ReaderOrder_Id" Type="int" Nullable="false" />
+          <Property Name="LineItem" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Book_Id" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="date" Nullable="false" />
+          <Property Name="IsExpired" Type="bit" Nullable="false" />
+          <Property Name="IsReturned" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reader">
+          <Key>
+            <PropertyRef Name="Reader_Id" />
+          </Key>
+          <Property Name="Reader_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BirthDate" Type="date" Nullable="false" />
+          <Property Name="CardNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateOfSigningIn" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReaderOrder">
+          <Key>
+            <PropertyRef Name="Order_Id" />
+          </Key>
+          <Property Name="Order_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Reader_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="Day_Id" />
+          </Key>
+          <Property Name="Day_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DayName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Employee_Id" Type="int" Nullable="false" />
+          <Property Name="WorkTime" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Employee_Job">
+          <End Role="Job" Type="Self.Job" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="Job_Id" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Job_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Logbook_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Logbook" Type="Self.Logbook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Logbook">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Logbook_Reader">
+          <End Role="Reader" Type="Self.Reader" Multiplicity="1" />
+          <End Role="Logbook" Type="Self.Logbook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reader">
+              <PropertyRef Name="Reader_Id" />
+            </Principal>
+            <Dependent Role="Logbook">
+              <PropertyRef Name="Reader_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Book">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Book_Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Book_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_ReaderOrder">
+          <End Role="ReaderOrder" Type="Self.ReaderOrder" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReaderOrder">
+              <PropertyRef Name="Order_Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ReaderOrder_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReaderOrder_Reader">
+          <End Role="Reader" Type="Self.Reader" Multiplicity="1" />
+          <End Role="ReaderOrder" Type="Self.ReaderOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reader">
+              <PropertyRef Name="Reader_Id" />
+            </Principal>
+            <Dependent Role="ReaderOrder">
+              <PropertyRef Name="Reader_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище LibraryDBModelContainer">
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Job" EntityType="Self.Job" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logbook" EntityType="Self.Logbook" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reader" EntityType="Self.Reader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReaderOrder" EntityType="Self.ReaderOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Employee_Job" Association="Self.FK_Employee_Job">
+            <End Role="Job" EntitySet="Job" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Logbook_Employee" Association="Self.FK_Logbook_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Logbook" EntitySet="Logbook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Logbook_Reader" Association="Self.FK_Logbook_Reader">
+            <End Role="Reader" EntitySet="Reader" />
+            <End Role="Logbook" EntitySet="Logbook" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Book" Association="Self.FK_Orders_Book">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_ReaderOrder" Association="Self.FK_Orders_ReaderOrder">
+            <End Role="ReaderOrder" EntitySet="ReaderOrder" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReaderOrder_Reader" Association="Self.FK_ReaderOrder_Reader">
+            <End Role="Reader" EntitySet="Reader" />
+            <End Role="ReaderOrder" EntitySet="ReaderOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Employee" Association="Self.FK_Schedule_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LibraryDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="Book_Id" />
+          </Key>
+          <Property Name="Book_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Autor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Genre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Publication" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Book" FromRole="Book" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Employee_Id" />
+          </Key>
+          <Property Name="Employee_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HireDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Job_Id" Type="Int32" Nullable="false" />
+          <Property Name="Salary" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Job" Relationship="Self.FK_Employee_Job" FromRole="Employee" ToRole="Job" />
+          <NavigationProperty Name="Logbooks" Relationship="Self.FK_Logbook_Employee" FromRole="Employee" ToRole="Logbook" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedule_Employee" FromRole="Employee" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="Job_Id" />
+          </Key>
+          <Property Name="Job_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Min_Salary" Type="Int32" Nullable="false" />
+          <Property Name="Max_Salary" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_Job" FromRole="Job" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Logbook">
+          <Key>
+            <PropertyRef Name="Logbook_Id" />
+          </Key>
+          <Property Name="Logbook_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Reader_Id" Type="Int32" Nullable="false" />
+          <Property Name="Employee_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Logbook_Employee" FromRole="Logbook" ToRole="Employee" />
+          <NavigationProperty Name="Reader" Relationship="Self.FK_Logbook_Reader" FromRole="Logbook" ToRole="Reader" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="ReaderOrder_Id" />
+            <PropertyRef Name="LineItem" />
+          </Key>
+          <Property Name="ReaderOrder_Id" Type="Int32" Nullable="false" />
+          <Property Name="LineItem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Book_Id" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsExpired" Type="Boolean" Nullable="false" />
+          <Property Name="IsReturned" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Self.FK_Orders_Book" FromRole="Orders" ToRole="Book" />
+          <NavigationProperty Name="ReaderOrder" Relationship="Self.FK_Orders_ReaderOrder" FromRole="Orders" ToRole="ReaderOrder" />
+        </EntityType>
+        <EntityType Name="Reader">
+          <Key>
+            <PropertyRef Name="Reader_Id" />
+          </Key>
+          <Property Name="Reader_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CardNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateOfSigningIn" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Logbooks" Relationship="Self.FK_Logbook_Reader" FromRole="Reader" ToRole="Logbook" />
+          <NavigationProperty Name="ReaderOrders" Relationship="Self.FK_ReaderOrder_Reader" FromRole="Reader" ToRole="ReaderOrder" />
+        </EntityType>
+        <EntityType Name="ReaderOrder">
+          <Key>
+            <PropertyRef Name="Order_Id" />
+          </Key>
+          <Property Name="Order_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Reader_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_ReaderOrder" FromRole="ReaderOrder" ToRole="Orders" />
+          <NavigationProperty Name="Reader" Relationship="Self.FK_ReaderOrder_Reader" FromRole="ReaderOrder" ToRole="Reader" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="Day_Id" />
+          </Key>
+          <Property Name="Day_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Employee_Id" Type="Int32" Nullable="false" />
+          <Property Name="WorkTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Schedule_Employee" FromRole="Schedule" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Orders_Book">
+          <End Role="Book" Type="Self.Book" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="Book_Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Book_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Job">
+          <End Role="Job" Type="Self.Job" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="Job_Id" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Job_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Logbook_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Logbook" Type="Self.Logbook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Logbook">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Logbook_Reader">
+          <End Role="Reader" Type="Self.Reader" Multiplicity="1" />
+          <End Role="Logbook" Type="Self.Logbook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reader">
+              <PropertyRef Name="Reader_Id" />
+            </Principal>
+            <Dependent Role="Logbook">
+              <PropertyRef Name="Reader_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_ReaderOrder">
+          <End Role="ReaderOrder" Type="Self.ReaderOrder" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReaderOrder">
+              <PropertyRef Name="Order_Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ReaderOrder_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReaderOrder_Reader">
+          <End Role="Reader" Type="Self.Reader" Multiplicity="1" />
+          <End Role="ReaderOrder" Type="Self.ReaderOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reader">
+              <PropertyRef Name="Reader_Id" />
+            </Principal>
+            <Dependent Role="ReaderOrder">
+              <PropertyRef Name="Reader_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LibraryDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="Self.Book" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Jobs" EntityType="Self.Job" />
+          <EntitySet Name="Logbooks" EntityType="Self.Logbook" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Readers" EntityType="Self.Reader" />
+          <EntitySet Name="ReaderOrders" EntityType="Self.ReaderOrder" />
+          <EntitySet Name="Schedules" EntityType="Self.Schedule" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_Orders_Book" Association="Self.FK_Orders_Book">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Job" Association="Self.FK_Employee_Job">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Logbook_Employee" Association="Self.FK_Logbook_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Logbook" EntitySet="Logbooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Employee" Association="Self.FK_Schedule_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Schedule" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Logbook_Reader" Association="Self.FK_Logbook_Reader">
+            <End Role="Reader" EntitySet="Readers" />
+            <End Role="Logbook" EntitySet="Logbooks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_ReaderOrder" Association="Self.FK_Orders_ReaderOrder">
+            <End Role="ReaderOrder" EntitySet="ReaderOrders" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReaderOrder_Reader" Association="Self.FK_ReaderOrder_Reader">
+            <End Role="Reader" EntitySet="Readers" />
+            <End Role="ReaderOrder" EntitySet="ReaderOrders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище LibraryDBModelContainer" CdmEntityContainer="LibraryDBEntities">
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="LibraryDBModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="Book_Id" ColumnName="Book_Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Autor" ColumnName="Autor" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Publication" ColumnName="Publication" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="LibraryDBModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+                <ScalarProperty Name="Job_Id" ColumnName="Job_Id" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jobs">
+            <EntityTypeMapping TypeName="LibraryDBModel.Job">
+              <MappingFragment StoreEntitySet="Job">
+                <ScalarProperty Name="Job_Id" ColumnName="Job_Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Min_Salary" ColumnName="Min_Salary" />
+                <ScalarProperty Name="Max_Salary" ColumnName="Max_Salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logbooks">
+            <EntityTypeMapping TypeName="LibraryDBModel.Logbook">
+              <MappingFragment StoreEntitySet="Logbook">
+                <ScalarProperty Name="Logbook_Id" ColumnName="Logbook_Id" />
+                <ScalarProperty Name="Reader_Id" ColumnName="Reader_Id" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="LibraryDBModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="ReaderOrder_Id" ColumnName="ReaderOrder_Id" />
+                <ScalarProperty Name="LineItem" ColumnName="LineItem" />
+                <ScalarProperty Name="Book_Id" ColumnName="Book_Id" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="IsExpired" ColumnName="IsExpired" />
+                <ScalarProperty Name="IsReturned" ColumnName="IsReturned" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Readers">
+            <EntityTypeMapping TypeName="LibraryDBModel.Reader">
+              <MappingFragment StoreEntitySet="Reader">
+                <ScalarProperty Name="Reader_Id" ColumnName="Reader_Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="DateOfSigningIn" ColumnName="DateOfSigningIn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReaderOrders">
+            <EntityTypeMapping TypeName="LibraryDBModel.ReaderOrder">
+              <MappingFragment StoreEntitySet="ReaderOrder">
+                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+                <ScalarProperty Name="Reader_Id" ColumnName="Reader_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedules">
+            <EntityTypeMapping TypeName="LibraryDBModel.Schedule">
+              <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="Day_Id" ColumnName="Day_Id" />
+                <ScalarProperty Name="DayName" ColumnName="DayName" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="WorkTime" ColumnName="WorkTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="LibraryDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
